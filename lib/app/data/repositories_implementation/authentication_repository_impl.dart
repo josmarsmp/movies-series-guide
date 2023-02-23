@@ -1,29 +1,25 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../domain/either.dart';
 import '../../domain/enums.dart';
-import '../../domain/models/user.dart';
+import '../../domain/models/user/user.dart';
 import '../../domain/repositories/authentication_repository.dart';
-
-const _key = 'sessionId';
+import '../services/local/session_service.dart';
+import '../services/remote/account_api.dart';
+import '../services/remote/authentication_api.dart';
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
-  final FlutterSecureStorage _secureStorage;
-
   AuthenticationRepositoryImpl(
-    this._secureStorage,
+    this._authenticationAPI,
+    this._accountAPI,
+    this._sessionService,
   );
-
-  @override
-  Future<User?> getUserData() {
-    return Future.value(
-      User(),
-    );
-  }
+  final AuthenticationAPI _authenticationAPI;
+  final AccountAPI _accountAPI;
+  final SessionService _sessionService;
 
   @override
   Future<bool> get isSignedIn async {
-    final sessionId = await _secureStorage.read(key: _key);
+    final sessionId = await _sessionService.sessionId;
     return sessionId != null;
   }
 
@@ -32,25 +28,43 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     String username,
     String password,
   ) async {
-    await Future.delayed(
-      const Duration(seconds: 2),
-    );
+    final requestTokenResult = await _authenticationAPI.createRequestToken();
 
-    if (username != 'test') {
-      return Either.left(SignInFailure.notFound);
-    }
-    if (password != '123456') {
-      return Either.left(SignInFailure.unauthorized);
-    }
+    return requestTokenResult.when(
+      (failure) => Either.left(failure),
+      (requestToken) async {
+        final loginResult = await _authenticationAPI.createSessionWithLogin(
+          username: username,
+          password: password,
+          requestToken: requestToken,
+        );
 
-    await _secureStorage.write(key: _key, value: '12345');
-    return Either.right(
-      User(),
+        return loginResult.when(
+          (failure) async => Either.left(failure),
+          (newRequestToken) async {
+            final sessionResult = await _authenticationAPI.createSession(
+              newRequestToken,
+            );
+
+            return sessionResult.when(
+              (failure) async => Either.left(failure),
+              (sessionId) async {
+                await _sessionService.saveSessionId(sessionId);
+                final user = await _accountAPI.getAccount(sessionId);
+                if (user == null) {
+                  return Either.left(SignInFailure.unknown);
+                }
+                return Either.right(user);
+              },
+            );
+          },
+        );
+      },
     );
   }
 
   @override
   Future<void> signOut() {
-    return _secureStorage.delete(key: _key);
+    return _sessionService.signOut();
   }
 }
