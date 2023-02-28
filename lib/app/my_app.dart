@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         initialRoute: Routes.splash,
         routes: appRoutes,
       ),
