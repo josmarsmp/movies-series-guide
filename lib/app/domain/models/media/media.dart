@@ -27,7 +27,7 @@ class Media with _$Media {
     @JsonKey(name: 'poster_path')
         required String posterPath,
     @JsonKey(name: 'backdrop_path')
-        required String backdropPath,
+        required String? backdropPath,
     @JsonKey(name: 'vote_average')
         required double voteAverage,
     @JsonKey(name: 'media_type')
@@ -50,6 +50,7 @@ List<Media> getMediaList(List list) {
             .where(
               (e) =>
                   e['media_type'] != 'person' &&
+                  e['media_type'] != 'tv' &&
                   e['poster_path'] != null &&
                   e['backdrop_path'] != null,
             )
