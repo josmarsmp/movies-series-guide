@@ -62,4 +62,29 @@ class AccountAPI {
       right: (value) => Either.right(value),
     );
   }
+
+  Future<Either<HttpRequestFailure, void>> marAsFavorite({
+    required int mediaId,
+    required MediaType type,
+    required bool favorite,
+  }) async {
+    final sessionId = await _sessionService.sessionId ?? '';
+    final accountId = await _sessionService.accountId;
+    final result = await _http.request(
+      '/account/$accountId/favorite',
+      queryParameters: {'session_id': sessionId},
+      body: {
+        'media_type': type.name,
+        'media_id': mediaId,
+        'favorite': favorite,
+      },
+      method: HttpMethod.post,
+      onSuccess: (_) => null,
+    );
+
+    return result.when(
+      left: handleHttpFailure,
+      right: (_) => Either.right(null),
+    );
+  }
 }

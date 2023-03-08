@@ -2,6 +2,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../domain/models/movie/movie.dart';
+import '../../../../../generated/assets.gen.dart';
 import '../../../../global/utils/get_image_url.dart';
 
 class MovieHeader extends StatelessWidget {
@@ -17,15 +18,23 @@ class MovieHeader extends StatelessWidget {
       children: [
         AspectRatio(
           aspectRatio: 16 / 13,
-          child: ExtendedImage.network(
-            getImageUrl(
-              movie.backdropPath,
-              imageQuality: ImageQuality.original,
-            ),
-            width: double.infinity,
-            height: double.infinity,
-            fit: BoxFit.cover,
-          ),
+          child: movie.backdropPath != null
+              ? ExtendedImage.network(
+                  getImageUrl(
+                    movie.backdropPath!,
+                    imageQuality: ImageQuality.original,
+                  ),
+                  width: double.infinity,
+                  height: double.infinity,
+                  fit: BoxFit.cover,
+                )
+              : Container(
+                padding: const EdgeInsets.all(25),
+                decoration: const BoxDecoration(
+                  color: Colors.black26
+                ),
+                  child: Assets.svgs.imagePlaceholder.svg(),
+                ),
         ),
         Positioned(
           right: 0,
