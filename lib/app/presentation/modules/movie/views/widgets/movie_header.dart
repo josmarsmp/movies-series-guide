@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../domain/models/movie/movie.dart';
 import '../../../../../generated/assets.gen.dart';
+import '../../../../global/extensions/build_context_ext.dart';
 import '../../../../global/utils/get_image_url.dart';
 
 class MovieHeader extends StatelessWidget {
@@ -63,9 +64,8 @@ class MovieHeader extends StatelessWidget {
                     children: [
                       Text(
                         movie.title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                        style: context.textTheme.titleMedium?.copyWith(
+                          color: Colors.white
                         ),
                       ),
                       const SizedBox(height: 10),

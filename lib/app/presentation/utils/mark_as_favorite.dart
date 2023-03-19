@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../domain/models/media/media.dart';
 import '../global/controllers/favorites/favorites_controller.dart';
+import '../global/dialogs/show_loader.dart';
 
 Future<void> markAsFavorite({
   required BuildContext context,
@@ -10,7 +11,10 @@ Future<void> markAsFavorite({
   required bool Function() mounted,
 }) async {
   final FavoritesController favoritesController = context.read();
-  final result = await favoritesController.markAsFavorite(media);
+  final result = await showLoader(
+    context,
+    favoritesController.markAsFavorite(media),
+  );
 
   if (!mounted()) {
     return;
