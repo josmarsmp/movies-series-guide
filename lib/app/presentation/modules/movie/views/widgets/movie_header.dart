@@ -108,11 +108,7 @@ class MovieHeader extends StatelessWidget {
                     ),
                     Text(
                       movie.voteAverage.toStringAsFixed(1),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: context.textTheme.titleLarge,
                     )
                   ],
                 ),
