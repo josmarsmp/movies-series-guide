@@ -28,7 +28,7 @@ class TrendingTimeWindow extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(30),
             child: Material(
-              color: context.isDarkModeEnable
+              color: context.isDarkModeEnabled
                   ? AppColors.darkLight
                   : const Color(0xfff0f0f0),
               child: Padding(

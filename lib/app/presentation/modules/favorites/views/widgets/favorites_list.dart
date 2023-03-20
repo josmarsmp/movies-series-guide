@@ -25,12 +25,12 @@ class _FavoritesListState extends State<FavoritesList>
       itemCount: widget.items.length,
       itemBuilder: (_, index) {
         final item = widget.items[index];
-
+        final isMovie = item.type == MediaType.movie;
         return MaterialButton(
-          onPressed: () => goToMediaDetails(
+          onPressed: isMovie ? () => goToMediaDetails(
             context,
             item,
-          ),
+          ) : () {},
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [

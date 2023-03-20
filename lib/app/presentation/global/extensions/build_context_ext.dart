@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 extension BuilContextExt on BuildContext {
-  bool get isDarkModeEnable {
+  bool get isDarkModeEnabled {
     return Theme.of(this).brightness == Brightness.dark;
   }
 

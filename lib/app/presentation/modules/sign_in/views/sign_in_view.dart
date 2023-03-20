@@ -50,6 +50,7 @@ class SignInView extends StatelessWidget {
                         const SizedBox(height: 20),
                         TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
+                          obscureText: true,
                           onChanged: (text) {
                             controller.onPasswordChanged(text);
                           },
