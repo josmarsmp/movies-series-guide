@@ -16,7 +16,7 @@ _Mobile app developed using Google's [Flutter](https://flutter.dev) SDK that con
 
 ## 🏁 Getting Started
 
-Create .env file in root with following keys
+Create .env file in project root with following keys
 ```
 TMDB_KEY=Your TheMovieDB API Key
 ```
