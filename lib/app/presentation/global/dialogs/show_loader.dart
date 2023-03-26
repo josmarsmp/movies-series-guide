@@ -1,3 +1,6 @@
+import 'dart:io' show Platform;
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Future<T> showLoader<T>(
@@ -8,7 +11,11 @@ Future<T> showLoader<T>(
   final entry = OverlayEntry(
     builder: (_) => Container(
       color: Colors.black45,
-      child: const CircularProgressIndicator(),
+      child: Center(
+        child: Platform.isAndroid
+            ? const CircularProgressIndicator()
+            : const CupertinoActivityIndicator(),
+      ),
     ),
   );
   overlayState.insert(entry);

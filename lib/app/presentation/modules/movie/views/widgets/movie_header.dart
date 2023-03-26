@@ -108,7 +108,9 @@ class MovieHeader extends StatelessWidget {
                     ),
                     Text(
                       movie.voteAverage.toStringAsFixed(1),
-                      style: context.textTheme.titleLarge,
+                      style: context.textTheme.titleLarge?.copyWith(
+                        color: Colors.white
+                      ),
                     )
                   ],
                 ),
