@@ -25,7 +25,7 @@ After that, you must run following commands for code generation
 
 ```
 flutter pub get
-flutter pub run buil_runner build
+flutter pub run build_runner build
 flutter pub run flutter_gen:flutter_gen_command
 ```
 
